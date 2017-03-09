@@ -1,0 +1,23 @@
+#ifndef _AES_H_
+#define _AES_H_
+
+#include<stdio.h>
+#include<string.h>
+
+#define Nr 11
+
+unsigned char Xtime(unsigned char Input);
+unsigned char Shift_Mixcol(unsigned char Output[4][4], unsigned char Input[4][4]);
+unsigned char AddRoundKey(unsigned char Output[4][4], unsigned char RoundKey[4][4], unsigned char Input[4][4]);
+unsigned char KeyExpansion(unsigned char Output[Nr][4][4], unsigned char CipherKey[4][4]);
+unsigned char EncryptionAES128(unsigned char Output[4][4], unsigned char Key[4][4], unsigned char Input[4][4]);
+
+unsigned char InvShift_SubByte(unsigned char Output[4][4], unsigned char Input[4][4]);
+unsigned char InvMixcol(unsigned char Output[4][4], unsigned char Input[4][4]);
+unsigned char DecryptionAES128(unsigned char Output[4][4], unsigned char Key[4][4], unsigned char Input[4][4]);
+
+unsigned char Aes128Test(unsigned char Plaintext[4][4], unsigned char Cypherkey[4][4]);
+#else
+#endif
+
+/* main 함수 생략 */
