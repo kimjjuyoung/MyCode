@@ -1,0 +1,27 @@
+#include"Table.h"
+
+void main()
+{
+	unsigned int Plaintext[4] = { 0x3243f6a8, 0x885a308d, 0x313198a2, 0xe0370734 };
+	unsigned int Cypherkey[4] = { 0x2b7e1516, 0x28aed2a6, 0xabf71588, 0x09cf4f3c };
+	unsigned int Cypertext[4] = { 0, };
+
+	unsigned int R[Nr][4] = { 0, };
+	
+	int i;
+
+	EncryptionAES128(Cypertext, Cypherkey, Plaintext);
+
+
+	puts("평문\n");
+	for (i = 0; i < 4; i++){
+		printf(" %08x", Plaintext[i]);
+	}
+
+	puts("\n");
+	puts("암호문\n");
+	for (i = 0; i < 4; i++){
+		printf(" %08x", Cypertext[i]);
+	}
+	puts("\n");
+}

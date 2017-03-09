@@ -1,0 +1,17 @@
+#ifndef _TABLE_H_
+#define _TABLE_H_
+
+#include<stdio.h>
+#include<string.h>
+
+#define Nr 11
+
+
+
+
+unsigned int KeyExpansion(unsigned int Output[Nr][4], unsigned int CipherKey[4]);
+unsigned int EncryptionAES128(unsigned int Output[4], unsigned int Key[4], unsigned int Input[4]);
+
+#else
+#endif
+

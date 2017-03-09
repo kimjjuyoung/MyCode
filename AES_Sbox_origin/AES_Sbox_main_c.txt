@@ -1,0 +1,16 @@
+#include "S_BOX.h"
+#include <time.h>
+
+void main()
+{
+	int i = 0;
+	unsigned char S_box[256] = { 0, };
+	time_t t1, t2;
+
+
+	for (i = 0; i < 256; i++){
+		Gen_S_Box(S_box);
+		printf("S_box[%d]=%02x\n", i, S_box[i]);
+	}
+
+}

@@ -1,0 +1,12 @@
+#ifndef _S_BOX_H_
+#define _S_BOX_H_
+
+#include <stdio.h>
+
+unsigned int move_left(unsigned short A3, unsigned char B3);
+unsigned char GF2sup8_inverse(unsigned char b);
+unsigned char affine_trans(unsigned char b);
+void Gen_S_Box(unsigned char S_box[]);
+
+#else
+#endif

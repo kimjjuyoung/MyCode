@@ -1,0 +1,98 @@
+#include "S_BOX.h"
+
+unsigned short bit_vector[16] = { 0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080, 0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000, 0x4000, 0x8000 };
+unsigned char affine_matrix[8] = { 0xf1, 0xe3, 0xc7, 0x8f, 0x1f, 0x3e, 0x7c, 0xf8 };
+
+//http://pulsebeat.tistory.com/20 참고 주소
+
+//A3와 B3 비트 자리 수 차이 (A3 > B3)
+unsigned int move_left(unsigned short A3, unsigned char B3)
+{
+	int i, temp1,temp2;
+
+	//처음으로 1이 나오는 위치 확인(bit로 볼 때)
+	for (i = 0; i < 16; i++)
+	{
+		if (A3 & bit_vector[15 - i])
+		{
+			temp1= 15 - i;
+			break;
+		}
+	}
+
+	for (i = 0; i < 8; i++)
+	{
+		if (B3 & bit_vector[7 - i])
+		{
+			temp2 = 7 - i;
+			break;
+		}
+	}
+
+	// 먼저 1이 나오는 비트 자리수 차이
+	return temp1 - temp2;
+}
+
+//GF(2^8)에서 b의 곱셈에 대한 역원 (확장된 유클리드 호제법 이용)
+unsigned char GF2sup8_inverse(unsigned char INPUT)
+{
+	unsigned char A2 = 0;
+	unsigned short A3 = 0x011b;
+	unsigned char B2 = 1;
+	unsigned char B3 = INPUT;
+	unsigned char tmp_B2;
+	unsigned char tmp_B3;
+
+	if (B3 == 0) //0의 역원은 0
+		return 0;
+
+	while (B3 != 1)
+	{
+		tmp_B2 = B2;
+		tmp_B3 = B3;
+		while (A3 > B3)// 0x011b > Input
+		{
+			A2 ^= (B2 << move_left(A3, B3));// 빼기 연산, 자리수를 맞춘 후 XOR 진행
+			A3 ^= (B3 << move_left(A3, B3));// 빼기 연산
+		}
+		B2 = A2;
+		B3 = (unsigned char)A3;
+		A2 = tmp_B2;
+		A3 = tmp_B3;
+	}
+
+	return B2;
+}
+
+//아핀 변환
+unsigned char affine_trans(unsigned char s)
+{
+	int i, j, count;
+	unsigned char tmp;
+	unsigned char rb = 0;
+
+	for (i = 0; i < 8; i++)
+	{
+		count = 0;
+		tmp = s & affine_matrix[i];
+		for (j = 0; j < 8; j++)
+			if (tmp & bit_vector[j])
+				count++;
+		rb ^= ((count & 0x01) << i);
+	}
+
+	return rb ^ 0x63; // 연산 후 0x63 XOR
+}
+
+//S-box 생성
+void Gen_S_Box(unsigned char S_box[])
+{
+	int i;
+	unsigned char tmp[256] = { 0, };
+
+	for (i = 0; i < 256; i++)
+	{
+		tmp[i] = GF2sup8_inverse(i);
+		S_box[i] = affine_trans(tmp[i]);
+	}
+}

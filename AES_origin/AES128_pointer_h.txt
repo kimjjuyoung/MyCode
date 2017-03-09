@@ -1,0 +1,22 @@
+#ifndef _AES128_H_
+#define _AES128_H_
+
+#include<stdio.h>
+#include<string.h>
+
+
+#define Nr 11
+
+
+unsigned char KeyExpansion(unsigned char *dst, unsigned char *src);
+unsigned char Xtime(unsigned char Input);
+unsigned char Shift_Mixcol(unsigned char *dst, unsigned char *src);
+unsigned char InvShift_SubByte(unsigned char *dst, unsigned char *src);
+unsigned char InvMixcol(unsigned char *dst, unsigned char *src);
+
+//src1 평문,암호문, src2 라운드키
+unsigned char EncryptionAES128(unsigned char *dst, unsigned char *src1, unsigned char *src2);
+unsigned char DecryptionAES128(unsigned char *dst, unsigned char *src1, unsigned char *src2);
+
+#else
+#endif
